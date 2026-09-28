@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#edf5ff">
+<title>每日作業與整潔檢核表</title>
+<style>
+:root{--ink:#263b5b;--muted:#667995;--blue:#397be3;--blue2:#e8f2ff;--line:#dce6f2;--bg:#f4f8ff;--green:#16865e;--shadow:0 12px 34px #344d7312}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#eaf3ff 0,#f7faff 270px,var(--bg) 100%);font-family:system-ui,-apple-system,"Noto Sans TC","Microsoft JhengHei",sans-serif;color:var(--ink);font-size:16px}
+.wrap{max-width:1200px;margin:auto;padding:clamp(16px,3vw,34px)}header{padding:8px 0 20px}.eyebrow{font-size:.86rem;font-weight:800;color:var(--blue);letter-spacing:.06em}.title{font-size:clamp(1.6rem,4vw,2.45rem);margin:5px 0 8px}.intro{margin:0;color:var(--muted);line-height:1.65}
+.panel{background:#fff;border:1px solid var(--line);border-radius:20px;padding:clamp(16px,2.5vw,25px);box-shadow:var(--shadow);margin:0 0 18px}.toprow{display:grid;grid-template-columns:minmax(190px,260px) minmax(0,1fr);gap:18px;align-items:end}.field label,.section-label{display:block;font-weight:800;margin:0 0 8px}.field input{width:100%;height:48px;border:1px solid #cbd8e8;border-radius:12px;padding:0 13px;color:var(--ink);font:inherit;background:#fff}.help{font-size:.88rem;color:var(--muted);line-height:1.5;margin:8px 0 0}.urlrow{display:flex;gap:8px}.urlrow input{min-width:0}.urlrow button,.tools button,.card-actions button{border:1px solid #cfdbeb;background:#fff;color:var(--ink);font:inherit;font-weight:750;border-radius:11px;padding:10px 13px;cursor:pointer}.urlrow button:hover,.tools button:hover,.card-actions button:hover{background:var(--blue2);border-color:#aec9f3}.urlrow button{white-space:nowrap}
+.metrics{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 0}.pill{background:#f0f5fc;border-radius:999px;padding:7px 12px;font-size:.9rem;color:#49617f}.pill strong{color:var(--ink)}.progress{height:7px;background:#e8eef7;border-radius:9px;margin-top:12px;overflow:hidden}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#6ab8ff,#397be3);transition:width .2s}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.tools{display:flex;gap:8px;flex-wrap:wrap}.tools .primary,.submit{background:var(--blue);border-color:var(--blue);color:#fff}.tools .primary:hover,.submit:hover{background:#2465c7}.columns{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px 14px;margin-top:15px}.coltoggle{display:flex;align-items:center;gap:8px;font-size:.9rem;color:#475c79}.coltoggle input{width:19px;height:19px;accent-color:var(--blue)}
+.students{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.student{background:#fff;border:1px solid var(--line);border-radius:17px;padding:14px 15px;box-shadow:0 5px 18px #344d730a}.student-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.student-head h2{font-size:1.1rem;margin:0}.card-actions{display:flex;gap:6px}.card-actions button{font-size:.82rem;padding:6px 9px}.checks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.check{display:flex;align-items:center;gap:7px;min-height:40px;border-radius:10px;padding:5px 7px;background:#f7f9fd;font-size:.9rem;line-height:1.2}.check input{width:20px;height:20px;flex:0 0 20px;accent-color:var(--green)}
+.submitrow{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}.submit{font:inherit;font-weight:850;border-radius:13px;padding:14px 24px;cursor:pointer}.status{min-height:24px;color:var(--muted);font-weight:700}.status.ok{color:var(--green)}.status.err{color:#b13d3d}.privacy{font-size:.86rem;color:var(--muted);line-height:1.55;margin:14px 0 0}.empty{display:none}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:720px){.toprow{grid-template-columns:1fr}.students{grid-template-columns:1fr}.checks{grid-template-columns:repeat(2,minmax(0,1fr))}.columns{grid-template-columns:repeat(2,minmax(0,1fr))}.wrap{padding:14px}}
+@media(min-width:1000px){.students{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><div class="eyebrow">CLASSROOM CHECKLIST</div><h1 class="title">每日作業與整潔檢核表</h1><p class="intro">勾選每位學生完成的項目，送出後會依日期和座號儲存到 Google 試算表。</p></header>
+<section class="panel" aria-label="表單設定">
+<div class="toprow"><div class="field"><label for="workDate">檢核日期</label><input id="workDate" type="date" required></div></div>
+<div class="metrics"><span class="pill">已勾選 <strong id="checkedCount">0</strong> 項</span><span class="pill">全班進度 <strong id="studentCount">0 / 22</strong></span><span class="pill">送出同一天資料會更新原紀錄</span></div><div class="progress" aria-label="檢核進度"><span id="progressBar"></span></div>
+</section>
+<section class="panel"><div class="toolbar"><div><div class="section-label">整欄快速勾選</div><p class="help">勾選或取消某一項時，會套用到全班 22 位學生。</p></div><div class="tools"><button type="button" class="primary" id="allOn">全班全選</button><button type="button" id="allOff">全班取消</button></div></div><div class="columns" id="columns"></div></section>
+<section class="students" id="students" aria-label="學生作業檢核"></section>
+<section class="panel" style="margin-top:18px"><div class="submitrow"><div><button type="button" class="submit" id="submitBtn">送出檢核表</button><div class="status" id="status" role="status" aria-live="polite"></div></div><div class="help">送出前請確認日期及勾選內容。</div></div><p class="privacy">資料會寫入你指定的 Google 試算表。請勿將試算表設為公開；只有持有此表單連結的人可以嘗試送出資料。</p></section>
+</div>
+<iframe name="gasReceiver" id="gasReceiver" title="資料送出回應" class="sr-only"></iframe>
+<form id="gasForm" method="post" target="gasReceiver" class="sr-only"><input type="hidden" name="payload" id="payload"></form>
+<script>
+(()=>{
+'use strict';
+// 部署 GAS 後，將網址貼在下一行引號內（網址以 /exec 結尾）。
+const GAS_URL='https://script.google.com/macros/s/AKfycbwI1CUhyylrilHt-0Cp1opc1EHvXpC8s0dm3uMqc_rDd7NSKK60iCjoSYMjTfgOudZsSA/exec';
+const items=['抄聯','單字','作業1','作業2','作業3','訂正1','訂正2','靠椅','潔牙','含氟','擦地','桌面清空','整潔'];
+const $=id=>document.getElementById(id), students=$('students');
+const dateInput=$('workDate'), statusEl=$('status');
+const today=new Date(); dateInput.value=new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10);
+
+function makeCheck(seat,item){const label=document.createElement('label');label.className='check';const input=document.createElement('input');input.type='checkbox';input.dataset.seat=seat;input.dataset.item=item;input.setAttribute('aria-label',seat+'號 '+item);const text=document.createElement('span');text.textContent=item;label.append(input,text);input.addEventListener('change',updateProgress);return label}
+function setSeat(seat,value){students.querySelectorAll('input[data-seat="'+seat+'"]').forEach(x=>x.checked=value);updateProgress()}
+for(const item of items){const label=document.createElement('label');label.className='coltoggle';const input=document.createElement('input');input.type='checkbox';input.dataset.column=item;input.setAttribute('aria-label',item+'全班全選或取消');input.addEventListener('change',()=>{students.querySelectorAll('input[data-item="'+item+'"]').forEach(x=>x.checked=input.checked);updateProgress()});const span=document.createElement('span');span.textContent=item;label.append(input,span);$('columns').append(label)}
+for(let seat=1;seat<=22;seat++){const card=document.createElement('article');card.className='student';const head=document.createElement('div');head.className='student-head';const title=document.createElement('h2');title.textContent=seat+' 號';const actions=document.createElement('div');actions.className='card-actions';for(const [caption,value] of [['全選',true],['清除',false]]){const b=document.createElement('button');b.type='button';b.textContent=caption;b.addEventListener('click',()=>setSeat(seat,value));actions.append(b)}head.append(title,actions);const checks=document.createElement('div');checks.className='checks';items.forEach(item=>checks.append(makeCheck(seat,item)));card.append(head,checks);students.append(card)}
+function updateProgress(){const checks=[...students.querySelectorAll('input[type=checkbox]')],checked=checks.filter(x=>x.checked).length;const complete=Array.from({length:22},(_,i)=>students.querySelectorAll('input[data-seat="'+(i+1)+'"]:checked').length===items.length).filter(Boolean).length;$('checkedCount').textContent=checked;$('studentCount').textContent=complete+' / 22';$('progressBar').style.width=(checked/(22*items.length)*100)+'%';document.querySelectorAll('input[data-column]').forEach(c=>{const xs=[...students.querySelectorAll('input[data-item="'+c.dataset.column+'"]')];c.checked=xs.every(x=>x.checked);c.indeterminate=!c.checked&&xs.some(x=>x.checked)})}
+$('allOn').addEventListener('click',()=>{students.querySelectorAll('input[type=checkbox]').forEach(x=>x.checked=true);updateProgress()});$('allOff').addEventListener('click',()=>{students.querySelectorAll('input[type=checkbox]').forEach(x=>x.checked=false);updateProgress()});
+function say(msg,kind=''){statusEl.textContent=msg;statusEl.className='status '+kind}
+window.addEventListener('message',event=>{const d=event.data;if(!d||d.type!=='checkwork-result'||d.id!==window.pendingSubmission)return;if(d.ok){say('已成功儲存到 Google 試算表。','ok')}else{say('儲存失敗：'+(d.message||'請檢查 GAS 部署網址與試算表設定。'),'err')}$('submitBtn').disabled=false;$('submitBtn').textContent='送出檢核表';window.pendingSubmission=null});
+$('submitBtn').addEventListener('click',()=>{const date=dateInput.value,url=GAS_URL.trim();if(!date){say('請先選擇檢核日期。','err');dateInput.focus();return}if(!/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(url)){say('請先在 HTML 程式設定區填入 GAS 部署網址。','err');return}const id=(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random());const rows=[];for(let seat=1;seat<=22;seat++){const row={seat,values:{}};items.forEach(item=>row.values[item]=!!students.querySelector('input[data-seat="'+seat+'"][data-item="'+item+'"]').checked);rows.push(row)}const payload={id,date,items,rows};window.pendingSubmission=id;$('payload').value=JSON.stringify(payload);$('gasForm').action=url;$('submitBtn').disabled=true;$('submitBtn').textContent='正在送出…';say('資料傳送中，請稍候…');$('gasForm').submit();window.setTimeout(()=>{if(window.pendingSubmission===id){say('尚未收到試算表確認。請檢查網路、部署網址或稍後查看試算表。','err');$('submitBtn').disabled=false;$('submitBtn').textContent='再試一次';window.pendingSubmission=null}},15000)});
+updateProgress();
+})();
+</script>
+</body></html>
